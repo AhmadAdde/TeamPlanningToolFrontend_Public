@@ -4,6 +4,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
+First, to install all libraries needed to start the application, you need to run this command:
+
+### `npm install react-scripts --save`
+
 In the project directory, you can run:
 
 ### `npm start`
