@@ -1,21 +1,27 @@
-import logo from "./logo.svg";
 import "./App.css";
+const logo = "https://team-planner.ru/assets/images/teamplanner-min.png";
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
+        <p>Welcome to the team plannig tool! 😊</p>
         <a
           className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
+          href="/signin"
+          //target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React kjgjhg
+          Sgin in
+        </a>
+        <a
+          className="App-link"
+          href="/signup"
+          //target="_blank"
+          rel="noopener noreferrer"
+        >
+          Sgin up
         </a>
       </header>
     </div>
