@@ -13,18 +13,14 @@ function SignIn() {
 
     AuthService.signIn(username, password)
       .then((res) => {
-        console.log(res);
-      })
-      .then((res) => {
         if (errorMessage !== null) {
-          navigate("/");
+          navigate("/homepage");
           window.location.reload();
         } else {
           setErrorMessage("Something went bananas, try again!");
         }
       })
       .catch((err) => {
-        console.log(err);
         setErrorMessage(err.message);
       });
   };
@@ -44,7 +40,7 @@ function SignIn() {
               onChange={(e) => setUsername(e.target.value)}
               placeholder="your-email@something.com"
             />
-            <label for="emailaddress">Email Address</label>
+            <label htmlFor="emailaddress">Email Address</label>
           </div>
           <div className="input-field col s6">
             <input
@@ -55,7 +51,7 @@ function SignIn() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="password"
             />
-            <label for="password">Password</label>
+            <label htmlFor="password">Password</label>
           </div>
           <hr />
           <div className="row center-align">

@@ -11,9 +11,12 @@ class AuthService {
       })
       .then((response) => {
         if (response.data.accessToken !== null) {
-          localStorage.setItem("user", JSON.stringify(response.data));
+          //localStorage.setItem("user", JSON.stringify(response.data));
+          localStorage.setItem(
+            "username",
+            JSON.stringify(response.data.username)
+          );
           localStorage.setItem("jwt", response.data.accessToken);
-          console.log("From auth-service: " + localStorage.getItem("user"));
         }
         return response.data;
       });
@@ -21,8 +24,8 @@ class AuthService {
 
   logout() {
     localStorage.removeItem("jwt");
-    localStorage.removeItem("user");
-    console.log("Logout");
+    localStorage.removeItem("username");
+    //localStorage.removeItem("user");
   }
 
   signUp(username, fullName, password, age) {
@@ -44,4 +47,5 @@ class AuthService {
   }
 }
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default new AuthService();
