@@ -1,29 +1,11 @@
-import "./App.css";
-const logo = "https://team-planner.ru/assets/images/teamplanner-min.png";
+import Routers from "./Routers";
+import Header from "./components/Header";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Welcome to the team planning tool! 😊</p>
-        <a
-          className="App-link"
-          href="/signin"
-          //target="_blank"
-          rel="noopener noreferrer"
-        >
-          Sgin in
-        </a>
-        <a
-          className="App-link"
-          href="/signup"
-          //target="_blank"
-          rel="noopener noreferrer"
-        >
-          Sgin up
-        </a>
-      </header>
+    <div>
+      <Header />
+      <Routers />
     </div>
   );
 }

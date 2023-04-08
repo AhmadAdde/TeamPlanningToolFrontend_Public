@@ -22,10 +22,9 @@ class AuthService {
       });
   }
 
-  logout() {
+  signOut() {
     localStorage.removeItem("jwt");
     localStorage.removeItem("username");
-    //localStorage.removeItem("user");
   }
 
   signUp(username, fullName, password, age) {

@@ -1,10 +1,12 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import FetchUserData from "./bl/userData";
 
 export default function HomePage() {
   const [userGreeting, setUserGreeting] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     FetchUserData.getUserGreeting()
@@ -21,18 +23,19 @@ export default function HomePage() {
       <h1>Welcome to Home page! 😊</h1>
       {errorMessage && <div>{errorMessage}</div>}
       <h4>{userGreeting}</h4>
-      <p>
+      <div>
         Your Json Web Toke is:
-        <br /> {localStorage.getItem("jwt")}
-      </p>
+        <br />{" "}
+        <p style={{ overflowWrap: "break-word" }}>
+          {localStorage.getItem("jwt")}
+        </p>
+      </div>
       <div className="row center-align">
         <button
-          className="btn waves-effect waves-light"
+          className="btn deep-purple darken-4 waves-effect waves-light"
           disabled={localStorage.getItem("jwt") ? false : true}
           onClick={() => {
-            localStorage.removeItem("jwt");
-            localStorage.removeItem("username");
-            window.location.reload();
+            navigate("/signout");
           }}
           type="submit"
           name="action"

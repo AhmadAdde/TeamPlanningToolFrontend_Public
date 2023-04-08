@@ -103,7 +103,7 @@ function SignUp() {
                 password !== confirmPassword
               }
               onClick={submitUser}
-              className="btn waves-effect waves-light"
+              className="btn waves-effect waves-light deep-purple darken-4"
             >
               Sign Up
             </button>
@@ -112,9 +112,9 @@ function SignUp() {
                 navigate("/signin");
                 window.location.reload();
               }}
-              className="btn waves-effect waves-light"
+              className="btn waves-effect waves-light deep-purple darken-4"
             >
-              Log In
+              Sign In
             </button>
           </div>
         </div>

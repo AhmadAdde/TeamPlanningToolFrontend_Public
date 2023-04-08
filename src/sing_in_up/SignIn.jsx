@@ -56,7 +56,7 @@ function SignIn() {
           <hr />
           <div className="row center-align">
             <button
-              className="btn waves-effect waves-light"
+              className="btn waves-effect waves-light deep-purple darken-4"
               disabled={username && password ? false : true}
               onClick={onLogInClicked}
               type="submit"
@@ -71,7 +71,7 @@ function SignIn() {
                 navigate("/signup");
                 window.location.reload();
               }}
-              className="btn waves-effect waves-light"
+              className="btn waves-effect waves-light deep-purple darken-4"
             >
               Don't have an acount? Sign Up
             </button>
