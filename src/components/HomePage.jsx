@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import FetchUserData from "./bl/userData";
+import TeamDataComp from "./team_data/TeamDataComp";
 
 export default function HomePage() {
   const [userGreeting, setUserGreeting] = useState(null);
@@ -43,6 +44,7 @@ export default function HomePage() {
           Sign Out
         </button>
       </div>
+      <TeamDataComp />
     </div>
   );
 }
