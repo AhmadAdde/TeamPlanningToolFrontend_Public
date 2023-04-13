@@ -1,16 +1,16 @@
-FROM node:17-alpine
+FROM node:alpine
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json ./
+
+COPY package-lock.json ./
+
+COPY ./ ./
 
 RUN npm install
 
-COPY . .
-
-EXPOSE 3000
-
 CMD [ "npm", "start" ]
 
-## docker build -t react-image .
-## docker run --rm -p 3000:3000 -v ${pwd}/src:/app/src:ro react-imgage
+## docker build -f Dockerfile -t react-image .
+## docker run --rm -it -p 3001:3000 react-image
