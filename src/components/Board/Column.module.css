@@ -72,10 +72,14 @@
 }
 .userHeader {
   background-color: #464343;
+  justify-content:left;
 }
 .count {
   font-size: 17px;
   font-weight: 600;
   color: white;
   
+}
+.userTitle {
+  margin-left: 10rem;
 }

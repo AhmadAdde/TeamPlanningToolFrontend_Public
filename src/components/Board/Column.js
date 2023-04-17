@@ -1,8 +1,10 @@
 import classes from "./Column.module.css";
 import { Draggable, Droppable } from "react-beautiful-dnd";
+import { toast, Toaster } from "react-hot-toast";
 
 function Column({ column, users, onClose }) {
   function handleClick() {
+    toast.success("Deleted " + column.teamName);
     onClose(column.teamName);
   }
   const userLength = Array.from(users);
@@ -13,24 +15,29 @@ function Column({ column, users, onClose }) {
         column.teamName === "Users" ? classes.userCol : ""
       }`}
     >
+      <Toaster />
       <div
         className={`${classes.header} ${
           column.teamName === "Users" ? classes.userHeader : ""
         }`}
       >
-        
         <p className={classes.count}>{userLength.length}</p>
-        <p className={classes.title}>{column.teamName}</p>
-       
-          <span
-            className={`${classes.close} ${
-              column.teamName === "Users" ? classes.noClose : ""
-            }`}
-            onClick={() => handleClick(column.teamName)}
-          >
-            &times;
-          </span>
-        
+        <p
+          className={`${classes.title} ${
+            column.teamName === "Users" ? classes.userTitle : ""
+          }`}
+        >
+          {column.teamName}
+        </p>
+
+        <span
+          className={`${classes.close} ${
+            column.teamName === "Users" ? classes.noClose : ""
+          }`}
+          onClick={() => handleClick(column.teamName)}
+        >
+          &times;
+        </span>
       </div>
       <Droppable droppableId={`${column.id}`}>
         {(provided, snapshot) => (
