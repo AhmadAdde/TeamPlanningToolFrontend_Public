@@ -1,0 +1,14 @@
+.columns {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  flex-wrap: wrap;
+  padding-bottom: 3rem;
+}
+.addTeam {
+  margin-bottom: 5rem;
+}
+.container {
+  padding-left: 4rem;
+  padding-right: 4rem;
+}
