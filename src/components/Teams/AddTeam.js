@@ -20,12 +20,14 @@ function AddTeam(props) {
       toast.success("Added "  + enteredTitle)
       props.onAddTeam(enteredTitle);
     }
+    const name = document.getElementById("team_name");
+    name.value = "";
     
   }
   return (
     <form onSubmit={submitHandler}>
       <Toaster />
-      <input type="text" name="teamName" className={classes.input} ref={titleInputRef}/>
+      <input type="text" name="teamName" id="team_name"className={classes.input} ref={titleInputRef}/>
 
       <button type="submit" value="Submit">
         AddTeam

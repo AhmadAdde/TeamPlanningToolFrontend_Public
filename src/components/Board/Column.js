@@ -42,7 +42,9 @@ function Column({ column, users, onClose }) {
       <Droppable droppableId={`${column.id}`}>
         {(provided, snapshot) => (
           <div
-            className={classes.list}
+          className={`${classes.list} ${
+            column.teamName === "Users" ? classes.userList : ""
+          }`}
             ref={provided.innerRef}
             {...provided.droppableProps}
           >

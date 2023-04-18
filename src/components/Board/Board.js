@@ -106,7 +106,6 @@ function Board({ users, dataTeams, deleteTeam, addTeam, setDataTeams }) {
       },
     };
     setState(newState);
-    
   };
 
   return (
@@ -116,20 +115,48 @@ function Board({ users, dataTeams, deleteTeam, addTeam, setDataTeams }) {
           <AddTeam onAddTeam={handelAddTeam} />
         </div>
         <div className={classes.columns}>
-          {state.columnOrder.map((teamId) => {
-            const column = state.dataTeams[teamId];
+          <div className={classes.userColumn}>
+            {state.columnOrder.map((teamId) => {
+              
+              if (teamId === "0") {
+                console.log("HEILA", teamId)
+                const column = state.dataTeams[teamId];
+                const users = column.userIds.map(
+                  (userId) => state.users[userId]
+                );
 
-            const users = column.userIds.map((userId) => state.users[userId]);
-            console.log("KYS", users);
-            return (
-              <Column
-                key={column.id}
-                column={column}
-                users={users}
-                onClose={handleClick}
-              />
-            );
-          })}
+                return (
+                  <Column
+                    key={column.id}
+                    column={column}
+                    users={users}
+                    onClose={handleClick}
+                  />
+                );
+              }
+              return null;
+            })}
+          </div>
+          <div className={classes.teamsColumn}>
+            {state.columnOrder.map((teamId) => {
+              if (teamId !== "0") {
+                const column = state.dataTeams[teamId];
+                const users = column.userIds.map(
+                  (userId) => state.users[userId]
+                );
+
+                return (
+                  <Column
+                    key={column.id}
+                    column={column}
+                    users={users}
+                    onClose={handleClick}
+                  />
+                );
+              }
+              return null;
+            })}
+          </div>
         </div>
       </div>
     </DragDropContext>
