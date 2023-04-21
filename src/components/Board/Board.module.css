@@ -13,11 +13,12 @@
   padding-right: 4rem;
 }
 .teamsColumn {
-  width: 100%;
+  width: 1740px;
   height: 100%;
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
+
 }
 .userColumn {
   margin-right: 4rem;

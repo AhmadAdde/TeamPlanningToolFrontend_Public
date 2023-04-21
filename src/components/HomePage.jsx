@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import FetchUserData from "./bl/userData";
-import getPersons from "../components/team_data/teamData";
+import getPersons from "../components/TeamData/teamData";
 import classes from "./HomePage.module.css";
 
 import Board from "./Board/Board";
@@ -11,31 +11,37 @@ export default function HomePage() {
   const [userGreeting, setUserGreeting] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const usersArray = [];
-  const users = getPersons.getPersons();
-  for (let i = 0; i < users.length; i++) {
-    usersArray.push(i);
-  }
-
-  const [dataTeams, setDataTeams] = useState([
-    { id: 0, teamName: "Users", userIds: usersArray },
-    
-  ]);
-  const navigate = useNavigate();
+ 
+  const [users, setUsers] = useState([]);
+  const [dataTeams, setDataTeams] = useState([])
+  
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await getPersons.getPersons();
+        setUsers(response);
+      } catch (error) {
+        setErrorMessage(error.message);
+      }
+    }
+    fetchData();
+  }, []);
 
   useEffect(() => {
-    FetchUserData.getUserGreeting()
-      .then((response) => {
-        setUserGreeting(response);
-      })
-      .catch((error) => {
-        setErrorMessage(error.message);
-      });
-  }, []);
+    if (users.length > 0) {
+      const usersArray = users.map(user => user.username);
+      setDataTeams([{ teamName: "Users", userIds: usersArray }]);
+    }
+  }, [users]);
+  
+  console.log("USERSBACKEN", users);
+  console.log("DATA TEAMS", dataTeams);
+  const navigate = useNavigate();
+
   function addTeamHandler(enteredTeamName) {
     const updatedDataTeams = [
       ...dataTeams,
-      { id: dataTeams.length, teamName: enteredTeamName, userIds: [] },
+      { teamName: enteredTeamName, userIds: [] },
     ];
     setDataTeams(updatedDataTeams);
     return updatedDataTeams;
@@ -44,32 +50,31 @@ export default function HomePage() {
     console.log("hejsan", dataTeams);
   }, [dataTeams]);
   function deleteTeamHandler(teamName) {
-    const removedTeam = dataTeams.filter(
-      (team) => team.teamName === teamName
-    );
+    const removedTeam = dataTeams.filter((team) => team.teamName === teamName);
     const updatedDataTeams = dataTeams.filter(
       (team) => team.teamName !== teamName
-    
     );
-    
+
     if (removedTeam[0].userIds.length > 0) {
-      console.log("USERID",removedTeam[0].userIds)
-      const newUsersUserIds = dataTeams[0].userIds.concat(removedTeam[0].userIds);
-      const sortedNewUsersUserIds= newUsersUserIds.sort();
-      console.log("USERID",sortedNewUsersUserIds);
-      
+      console.log("USERID", removedTeam[0].userIds);
+      const newUsersUserIds = dataTeams[0].userIds.concat(
+        removedTeam[0].userIds
+      );
+      const sortedNewUsersUserIds = newUsersUserIds.sort();
+      console.log("USERID", sortedNewUsersUserIds);
+
       updatedDataTeams[0].userIds = sortedNewUsersUserIds;
     }
-    
-    const updatedDataTeamsWithNewIds = updatedDataTeams.map((team, index) => {
+
+    /*const updatedDataTeamsWithNewIds = updatedDataTeams.map((team, index) => {
       return {
         ...team,
         id: index,
       };
     });
-    console.log("walla", updatedDataTeamsWithNewIds);
-    setDataTeams(updatedDataTeamsWithNewIds);
-    return updatedDataTeamsWithNewIds;
+    console.log("walla", updatedDataTeamsWithNewIds);*/
+    setDataTeams(updatedDataTeams);
+    return updatedDataTeams;
   }
 
   console.log("DATATIHOMEREAL", dataTeams);

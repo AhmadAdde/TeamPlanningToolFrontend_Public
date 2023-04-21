@@ -1,14 +1,29 @@
 import classes from "./Column.module.css";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { toast, Toaster } from "react-hot-toast";
-
+import { useCollapse } from "react-collapsed";
+import {useState} from "react";
 function Column({ column, users, onClose }) {
   function handleClick() {
     toast.success("Deleted " + column.teamName);
     onClose(column.teamName);
   }
+  const [isExpanded, setExpanded] = useState(false);
+  const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });
+  function mouseInEvent() {
+    console.log("ALLLALWASARI")
+    if (column.teamName !== "Users") {
+      setExpanded(true);
+    }
+  }
+
+  function mouseOutEvent() {
+    if (column.teamName !== "Users") {
+      setExpanded(false);
+    }
+  }
   const userLength = Array.from(users);
-  console.log("USERS", users);
+  
   return (
     <div
       className={`${classes.column} ${
@@ -20,6 +35,8 @@ function Column({ column, users, onClose }) {
         className={`${classes.header} ${
           column.teamName === "Users" ? classes.userHeader : ""
         }`}
+       
+        
       >
         <p className={classes.count}>{userLength.length}</p>
         <p
@@ -34,22 +51,29 @@ function Column({ column, users, onClose }) {
           className={`${classes.close} ${
             column.teamName === "Users" ? classes.noClose : ""
           }`}
+          
           onClick={() => handleClick(column.teamName)}
         >
           &times;
         </span>
       </div>
-      <Droppable droppableId={`${column.id}`}>
+      <Droppable droppableId={`${column.teamName}`}>
         {(provided, snapshot) => (
           <div
-          className={`${classes.list} ${
-            column.teamName === "Users" ? classes.userList : ""
-          }`}
+            
+            className={`${classes.list} ${
+              column.teamName === "Users" ? classes.userList : ""
+            }`}
+            
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
             {users.map((user, index) => (
-              <Draggable key={user.id} draggableId={`${user.id}`} index={index}>
+              <Draggable
+                key={user.username}
+                draggableId={`${user.username}`}
+                index={index}
+              >
                 {(provided, snapshot) => (
                   <div
                     className={`${classes.users} ${
