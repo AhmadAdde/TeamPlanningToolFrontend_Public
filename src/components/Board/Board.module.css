@@ -1,0 +1,25 @@
+.columns {
+  display: flex;
+  width: 100%;
+}
+
+.addTeam {
+  margin-bottom: 5rem;
+}
+
+.container {
+  padding-left: 4rem;
+  padding-right: 216px;
+}
+
+.teamsColumn {
+  width: 1740px;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.userColumn {
+  margin-right: 4rem;
+}
