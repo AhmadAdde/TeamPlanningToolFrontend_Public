@@ -11,7 +11,7 @@ export default function HomePage() {
   const [userGreeting, setUserGreeting] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
 
- 
+  const [deletedTeams, setDeletedTeams] = useState([]);
   const [users, setUsers] = useState([]);
   const [dataTeams, setDataTeams] = useState([])
   
@@ -50,6 +50,8 @@ export default function HomePage() {
     console.log("hejsan", dataTeams);
   }, [dataTeams]);
   function deleteTeamHandler(teamName) {
+    const newDeletedTeams = [...deletedTeams, teamName];
+    setDeletedTeams(newDeletedTeams)
     const removedTeam = dataTeams.filter((team) => team.teamName === teamName);
     const updatedDataTeams = dataTeams.filter(
       (team) => team.teamName !== teamName
@@ -76,6 +78,10 @@ export default function HomePage() {
     setDataTeams(updatedDataTeams);
     return updatedDataTeams;
   }
+  function handleSaved(savedData) {
+    console.log("SAVEDDATA",savedData)
+    console.log("DELETEDDATA", deletedTeams)
+  }
 
   console.log("DATATIHOMEREAL", dataTeams);
   function setDataTeamsHandler(newDataTeams) {
@@ -97,6 +103,7 @@ export default function HomePage() {
           deleteTeam={deleteTeamHandler}
           addTeam={addTeamHandler}
           setDataTeams={setDataTeamsHandler}
+          handleSaved={handleSaved}
         />
       </div>
       <div>

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/api/data";
+const API_URL = "http://localhost:8080";
 const jwt = localStorage.getItem("jwt");
 
 const Headers = {
@@ -11,7 +11,7 @@ const Headers = {
 class DataService {
   getPersons() {
     return axios
-      .get(API_URL + "/get-person-data", {
+      .get(API_URL + "/person/getAll", {
         headers: Headers,
       })
       .then((response) => {

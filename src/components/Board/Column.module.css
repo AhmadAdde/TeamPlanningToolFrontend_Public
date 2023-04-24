@@ -1,91 +1,110 @@
 .column {
   display: flex;
   border-radius: 3px;
-  background-color: #343232;
-  width: 220px;
-  height: 60px;
-  
-  flex-direction: column;
-  
-  
+  background-color: #b1b1b1;
+  width: 200px;
+  height: 200px;
+  border-radius: 12px;
+  flex-direction: column;  
 }
+
 .header {
   display: flex;
-  text-align: center;
+  text-align: right;
   height: 60px;
-  background-color: #201f1f;
-  border-radius: 3px 3px 0px 0px;
+  background-color: #505AC9;
+  border-radius: 12px 12px 0px 0px;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
-
   justify-content: space-between;
 }
 
-
-.header:hover .column{
-  height: 500px;
-  width: 300px;
-  border: 1px solid aqua;
-  
-  
+.column:hover{
+  height: 416px;
+  width: 416px;
+  margin-bottom: -540px;
+  margin-right: -216px;
+  z-index: 100; 
+  transition: 0.2s;
+  background-color: #dadada;
 }
-.header:hover .list{
+
+.column:hover .list{
   visibility: visible;
-  width: 300px;
+  width: 416px;
   height: 600px;
-  padding-bottom: 1rem;
+  padding-bottom: 0rem;
+  transition: 0.2s;
+  overflow-y: scroll;
 }
-.list:hover {
-  height: 500px;
-  width: 300px;
-  border: 1px solid aqua;
-  visibility: visible;
-  width: 300px;
-  height: 600px;
-  padding-bottom: 1rem;
-}
-
-
 
 .title {
   font-size: 17px;
   font-weight: 600;
   color: white;
 }
+
 .list {
-  visibility: hidden;
+  visibility: visible;
   display: flex;
+  flex-direction: column;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
-  
-  flex-wrap: wrap;
-  
-  height: 0px;
-  width: 220px;
+  height: 200px;
+  width: 200px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  overflow: hidden;
 }
+
+.column:hover .users {
+  height: 70px;
+  transition: 0.2s;
+}
+
 .users {
   display: flex;
-  margin-top: 1rem;
-  height: 72px;
-  background-color: aqua;
+  margin-top: 0.4rem;
+  background-color: #f2f2f2;
   border-radius: 3px;
   flex-direction: column;
-  text-align: center;
-  padding-bottom: 0.5rem;
-  padding-top: 0.5rem;
-  justify-content: center;
-  
+  padding: 0.2rem;
+  padding-left: 0.5rem;
+  padding-top: 0;
+  width: 100%;
+  height: 24px;
 }
+
+.users p {
+  margin: 0px;
+}
+
+.column .users .hidden {
+  visibility: hidden;
+}
+
+.column:hover .users .hidden {
+  visibility: visible;
+  transition: 0.2s;
+}
+
+.column:hover .close {
+  visibility: visible;
+}
+
 .close {
+  visibility: hidden;
   color: white;
   font-size: 25px;
   margin-top: 10px;
   font-weight: bold;
 }
+
 .close:hover {
   cursor: pointer;
   color: #847e7e;
 }
+
 .dragging {
   outline: 2px solid;
   outline-color: red;
@@ -98,18 +117,17 @@
 .team {
   margin: 0px;
 }
-.firstname {
-  
-  margin: 0px;
-}
+
 .userCol {
   background-color: #847e7e;
-  width: 300px;
+  width: 200px;
   height: 620px;
+
 }
 .userCol:hover {
-  border: none;
   height: 620px;
+  margin-bottom: 0;
+  margin-right: 0px;
 }
 .userHeader {
   background-color: #464343;
@@ -130,5 +148,5 @@
   padding-right: 1.5rem;
   flex: 1;
   flex-direction: column;
-  width: 300px;
+  width: 200px;
 }

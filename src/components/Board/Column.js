@@ -3,32 +3,33 @@ import { Draggable, Droppable } from "react-beautiful-dnd";
 import { toast, Toaster } from "react-hot-toast";
 import { useCollapse } from "react-collapsed";
 import {useState} from "react";
-function Column({ column, users, onClose }) {
+function Column({ column, users, onClose, state }) {
   function handleClick() {
     toast.success("Deleted " + column.teamName);
     onClose(column.teamName);
   }
   const [isExpanded, setExpanded] = useState(false);
   const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });
-  function mouseInEvent() {
-    console.log("ALLLALWASARI")
-    if (column.teamName !== "Users") {
-      setExpanded(true);
-    }
+  const [showMessage, setShowMessage] = useState(false);
+
+  function mouseInEvent(e) {
+    setShowMessage(true);
   }
 
   function mouseOutEvent() {
-    if (column.teamName !== "Users") {
-      setExpanded(false);
-    }
+    setShowMessage(false);
   }
+  
   const userLength = Array.from(users);
+ 
   
   return (
     <div
       className={`${classes.column} ${
         column.teamName === "Users" ? classes.userCol : ""
-      }`}
+      }`} 
+      onMouseEnter={mouseInEvent}
+      onMouseLeave={mouseOutEvent}
     >
       <Toaster />
       <div
@@ -84,8 +85,9 @@ function Column({ column, users, onClose }) {
                     {...provided.dragHandleProps}
                   >
                     <div className={classes.info}>
-                      <p className={classes.firstname}>{user.firstname}</p>
-                      <p className={classes.team}>Team: {user.team}</p>
+                      <p>{user.firstname} {user.lastname}</p>
+                      <p className={classes.hidden}>{true ? user.username : ""}</p>    
+                      <p className={classes.hidden}>{true ? "ROLE" : ""}</p>
                     </div>
                   </div>
                 )}
