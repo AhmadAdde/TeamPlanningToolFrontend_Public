@@ -1,35 +1,20 @@
 import classes from "./Column.module.css";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { toast, Toaster } from "react-hot-toast";
-import { useCollapse } from "react-collapsed";
-import {useState} from "react";
-function Column({ column, users, onClose, state }) {
+
+function Column({ column, users, onClose }) {
   function handleClick() {
     toast.success("Deleted " + column.teamName);
     onClose(column.teamName);
   }
-  const [isExpanded, setExpanded] = useState(false);
-  const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });
-  const [showMessage, setShowMessage] = useState(false);
-
-  function mouseInEvent(e) {
-    setShowMessage(true);
-  }
-
-  function mouseOutEvent() {
-    setShowMessage(false);
-  }
-  
-  const userLength = Array.from(users);
  
-  
+  const userLength = Array.from(users);
+
   return (
     <div
       className={`${classes.column} ${
         column.teamName === "Users" ? classes.userCol : ""
-      }`} 
-      onMouseEnter={mouseInEvent}
-      onMouseLeave={mouseOutEvent}
+      }`}
     >
       <Toaster />
       <div
@@ -71,8 +56,8 @@ function Column({ column, users, onClose, state }) {
           >
             {users.map((user, index) => (
               <Draggable
-                key={user.username}
-                draggableId={`${user.username}`}
+                key={user.username + column.teamName}
+                draggableId={`${user.username + column.teamName}`}
                 index={index}
               >
                 {(provided, snapshot) => (

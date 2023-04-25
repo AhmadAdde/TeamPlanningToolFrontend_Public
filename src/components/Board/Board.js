@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import classes from "./Board.module.css";
 import { DragDropContext } from "react-beautiful-dnd";
 import Column from "./Column";
@@ -9,16 +9,23 @@ const reorderColumnList = (sourceCol, startIndex, endIndex) => {
   console.log("SOURCECOL", Array.from(sourceCol.userIds));
   const newUserIds = Array.from(sourceCol.userIds);
   const [removed] = newUserIds.splice(startIndex, 1);
-  console.log("GEY1", newUserIds);
+
   newUserIds.splice(endIndex, 0, removed);
-  console.log("GEY2", newUserIds);
+
   const newColumn = {
     ...sourceCol,
     userIds: newUserIds,
   };
   return newColumn;
 };
-function Board({ users, dataTeams, deleteTeam, addTeam, setDataTeams, handleSaved}) {
+function Board({
+  users,
+  dataTeams,
+  deleteTeam,
+  addTeam,
+  setDataTeams,
+  handleSaved,
+}) {
   function handelAddTeam(enteredTitle) {
     const addedDataTeams = addTeam(enteredTitle);
     const newAddedColumnOrder = Object.keys(addedDataTeams);
@@ -64,11 +71,9 @@ function Board({ users, dataTeams, deleteTeam, addTeam, setDataTeams, handleSave
     );
 
     const output = {
-      columnOrder: transformedState.columnOrder.concat(originalState.columnOrder.slice(1)),
       dataTeams: dataTeams1.concat(dataTeams2),
     };
 
-    
     handleSaved(output);
   }
   function handleStart() {
@@ -89,11 +94,9 @@ function Board({ users, dataTeams, deleteTeam, addTeam, setDataTeams, handleSave
   const onDragEnd = (result) => {
     console.log(result);
     const { destination, source } = result;
-
     if (!destination) {
       return;
     }
-
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
@@ -130,50 +133,149 @@ function Board({ users, dataTeams, deleteTeam, addTeam, setDataTeams, handleSave
       setState(newState);
       return;
     }
+    console.log("SOURCECOLLLLLL", sourceCol);
+    if (sourceCol.teamName === "Users") {
+      const startUserIds = Array.from(sourceCol.userIds);
+      console.log("STARTUSERIDS", startUserIds);
 
-    const startUserIds = Array.from(sourceCol.userIds);
-    console.log("STARTUSERIDS", startUserIds);
-    const [removed] = startUserIds.splice(source.index, 1);
-    console.log("REMOVED", [removed]);
-    const newStartCol = {
-      ...sourceCol,
-      userIds: startUserIds,
-    };
+      const [removed] = startUserIds.splice(source.index, 1);
+      console.log("REMOVED", [removed]);
+      console.log("STARTUSERIDS", startUserIds);
+      const newStartCol = {
+        ...sourceCol,
+      };
 
-    console.log("NEWSTARTCOL", newStartCol);
-    const endUserIds = Array.from(destinationCol.userIds);
-    console.log("ENDUSERIDS", endUserIds);
-    endUserIds.splice(destination.index, 0, removed);
-    console.log("ENDUSERIDS", destination.index);
-    const newEndCol = {
-      ...destinationCol,
-      userIds: endUserIds,
-    };
-    console.log("NEWENDCOL", newEndCol);
-    const newDataTeams = {
-      dataTeams: {
-        ...state.dataTeams,
-        [dataTeams.findIndex((team) => team.teamName === newStartCol.teamName)]:
-          newStartCol,
-        [dataTeams.findIndex((team) => team.teamName === newEndCol.teamName)]:
-          newEndCol,
-      },
-    };
-    console.log("NEWDATATEAMS", newDataTeams);
-    setDataTeams(newDataTeams);
-    console.log("NEWSTATE", newDataTeams);
-    const newState = {
-      ...state,
-      dataTeams: {
-        ...state.dataTeams,
-        [dataTeams.findIndex((team) => team.teamName === newStartCol.teamName)]:
-          newStartCol,
-        [dataTeams.findIndex((team) => team.teamName === newEndCol.teamName)]:
-          newEndCol,
-      },
-    };
-    console.log("NEWSTATE", newState);
-    setState(newState);
+      console.log("NEWSTARTCOL", newStartCol);
+      const endUserIds = Array.from(destinationCol.userIds);
+      console.log("ENDUSERIDS", endUserIds);
+      endUserIds.splice(destination.index, 0, removed);
+      console.log("DESTINDEX", destination.index);
+      console.log("ENDUSERIDS", endUserIds);
+      const newEndCol = {
+        ...destinationCol,
+        userIds: endUserIds,
+      };
+      console.log("NEWENDCOL", newEndCol);
+      const newDataTeams = {
+        dataTeams: {
+          ...state.dataTeams,
+          [dataTeams.findIndex(
+            (team) => team.teamName === newStartCol.teamName
+          )]: newStartCol,
+          [dataTeams.findIndex((team) => team.teamName === newEndCol.teamName)]:
+            newEndCol,
+        },
+      };
+      console.log("NEWDATATEAMS", newDataTeams);
+      setDataTeams(newDataTeams);
+      console.log("NEWSTATE", newDataTeams);
+      const newState = {
+        ...state,
+        dataTeams: {
+          ...state.dataTeams,
+          [dataTeams.findIndex(
+            (team) => team.teamName === newStartCol.teamName
+          )]: newStartCol,
+          [dataTeams.findIndex((team) => team.teamName === newEndCol.teamName)]:
+            newEndCol,
+        },
+      };
+      console.log("NEWSTATE", newState);
+      setState(newState);
+    } else {
+      const startUserIds = Array.from(sourceCol.userIds);
+      console.log("STARTUSERIDS", startUserIds);
+
+      const [removed] = startUserIds.splice(source.index, 1);
+      console.log("REMOVED", [removed]);
+
+      const newStartCol = {
+        ...sourceCol,
+        userIds: startUserIds,
+      };
+      if (destinationCol.teamName === "Users") {
+        console.log("NEWSTARTCOL", newStartCol);
+        const endUserIds = Array.from(destinationCol.userIds);
+        const newEndUserIds = Array.from(destinationCol.userIds);
+        console.log("ENDUSERIDS", endUserIds);
+        endUserIds.splice(destination.index, 0, removed);
+        console.log("DESTINDEX", destination.index);
+        console.log("ENDUSERIDS", endUserIds);
+        const newEndCol = {
+          ...destinationCol,
+          userIds: newEndUserIds,
+        };
+        console.log("NEWENDCOL", newEndCol);
+        const newDataTeams = {
+          dataTeams: {
+            ...state.dataTeams,
+            [dataTeams.findIndex(
+              (team) => team.teamName === newStartCol.teamName
+            )]: newStartCol,
+            [dataTeams.findIndex(
+              (team) => team.teamName === newEndCol.teamName
+            )]: newEndCol,
+          },
+        };
+        console.log("NEWDATATEAMS", newDataTeams);
+        setDataTeams(newDataTeams);
+        console.log("NEWSTATE", newDataTeams);
+        const newState = {
+          ...state,
+          dataTeams: {
+            ...state.dataTeams,
+            [dataTeams.findIndex(
+              (team) => team.teamName === newStartCol.teamName
+            )]: newStartCol,
+            [dataTeams.findIndex(
+              (team) => team.teamName === newEndCol.teamName
+            )]: newEndCol,
+          },
+        };
+        console.log("NEWSTATE", newState);
+        setState(newState);
+      } else {
+        console.log("NEWSTARTCOL", newStartCol);
+        const endUserIds = Array.from(destinationCol.userIds);
+        console.log("ENDUSERIDS", endUserIds);
+        endUserIds.splice(destination.index, 0, removed);
+        console.log("DESTINDEX", destination.index);
+        console.log("ENDUSERIDS", endUserIds);
+        const newEndCol = {
+          ...destinationCol,
+          userIds: endUserIds,
+        };
+        console.log("NEWENDCOL", newEndCol);
+        const newDataTeams = {
+          dataTeams: {
+            ...state.dataTeams,
+            [dataTeams.findIndex(
+              (team) => team.teamName === newStartCol.teamName
+            )]: newStartCol,
+            [dataTeams.findIndex(
+              (team) => team.teamName === newEndCol.teamName
+            )]: newEndCol,
+          },
+        };
+        console.log("NEWDATATEAMS", newDataTeams);
+        setDataTeams(newDataTeams);
+        console.log("NEWSTATE", newDataTeams);
+        const newState = {
+          ...state,
+          dataTeams: {
+            ...state.dataTeams,
+            [dataTeams.findIndex(
+              (team) => team.teamName === newStartCol.teamName
+            )]: newStartCol,
+            [dataTeams.findIndex(
+              (team) => team.teamName === newEndCol.teamName
+            )]: newEndCol,
+          },
+        };
+        console.log("NEWSTATE", newState);
+        setState(newState);
+      }
+    }
   };
   console.log("STATATDTATDTATD", state);
 
