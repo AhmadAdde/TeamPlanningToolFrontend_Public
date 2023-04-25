@@ -26,6 +26,8 @@ function Board({
   setDataTeams,
   handleSaved,
 }) {
+  
+  
   function handelAddTeam(enteredTitle) {
     const addedDataTeams = addTeam(enteredTitle);
     const newAddedColumnOrder = Object.keys(addedDataTeams);
@@ -44,6 +46,7 @@ function Board({
 
   const [originalState, setOriginalState] = useState([]);
   const [state, setState] = useState(initialData);
+  
   function transformDataTeams(obj) {
     const { dataTeams, ...rest } = obj;
     const transformedDataTeams = Object.values(dataTeams).map(
@@ -73,7 +76,8 @@ function Board({
     const output = {
       dataTeams: dataTeams1.concat(dataTeams2),
     };
-
+    output.dataTeams = output.dataTeams.filter((team, index) => team.teamName !== "Users")
+    
     handleSaved(output);
   }
   function handleStart() {

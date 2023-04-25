@@ -14,37 +14,31 @@ export default function HomePage() {
   const [dataTeams, setDataTeams] = useState([])
   
   useEffect(() => {
-    
-    async function fetchData() {
-      
-      try {
-        const response = await getPersons.getPersons();
-        setUsers(response);
-      } catch (error) {
-        setErrorMessage(error.message);
-      }
-    
-    }
-    fetchData()
-  }, []);
-  useEffect(() => {
     async function fetchData() {
       try {
+        const userResponse = await getPersons.getPersons();
+        setUsers(userResponse);
+
         const response = await getPersons.getTeams();
-        console.log("DATABASETEAM", response.reverse())
-        setDataTeams(response);
+        
+
+        const userColumn = {teamName: "Users", userIds: []};
+        for(var i = 0; i < userResponse.length; i++) {
+          userColumn.userIds.push(userResponse[i].username);
+        }
+
+        response.push(userColumn);
+
+        console.log("DATABASETEAM", response)
+        
+        setDataTeams(response.reverse());
       } catch (error) {
         setErrorMessage(error.message);
       }
     }
     fetchData();
   }, []);
-  useEffect(() => {
-    if (dataTeams.length === 0) {
-      const usersArray = users.map(user => user.username);
-      setDataTeams([{ teamName: "Users", userIds: usersArray }]);
-    }
-  }, [users, dataTeams]);
+
   
   console.log("USERSBACKEN", users);
   console.log("DATA TEAMS", dataTeams);
@@ -84,6 +78,7 @@ export default function HomePage() {
     const dataArray = Object.values(newDataTeams.dataTeams);
     setDataTeams(dataArray);
   }
+ 
 
   return (
     <div>
