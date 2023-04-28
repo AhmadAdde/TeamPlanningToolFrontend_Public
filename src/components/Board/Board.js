@@ -26,8 +26,6 @@ function Board({
   setDataTeams,
   handleSaved,
 }) {
-  
-  
   function handelAddTeam(enteredTitle) {
     const addedDataTeams = addTeam(enteredTitle);
     const newAddedColumnOrder = Object.keys(addedDataTeams);
@@ -46,39 +44,49 @@ function Board({
 
   const [originalState, setOriginalState] = useState([]);
   const [state, setState] = useState(initialData);
+
+  function transformDataTeams(state) {
+    if (Array.isArray(state.dataTeams)) {
+      return state;
+    }
   
-  function transformDataTeams(obj) {
-    const { dataTeams, ...rest } = obj;
-    const transformedDataTeams = Object.values(dataTeams).map(
-      ({ teamName, userIds }) => ({ teamName, userIds })
-    );
-    return { ...rest, dataTeams: transformedDataTeams };
+    const dataTeamsArray = [];
+  
+    for (const key in state.dataTeams) {
+      dataTeamsArray.push(state.dataTeams[key]);
+    }
+  
+    return {
+      ...state,
+      dataTeams: dataTeamsArray,
+    };
   }
   function handleSave() {
-    console.log("DIFFEReNCE", originalState);
-
-    const transformedState = transformDataTeams(state);
-    console.log("DIFFEReNCE", transformedState);
-    const userIds2 = originalState.dataTeams.flatMap(({ userIds }) => userIds);
-
-    const commonUserIds = userIds2.filter((userId) =>
-      transformedState.dataTeams.some(({ userIds }) => userIds.includes(userId))
-    );
-
-    const dataTeams1 = transformedState.dataTeams.filter(({ userIds }) =>
-      userIds.some((id) => commonUserIds.includes(id))
-    );
-
-    const dataTeams2 = originalState.dataTeams.filter(
-      ({ userIds }) => !userIds.every((id) => commonUserIds.includes(id))
-    );
-
-    const output = {
-      dataTeams: dataTeams1.concat(dataTeams2),
-    };
-    output.dataTeams = output.dataTeams.filter((team, index) => team.teamName !== "Users")
     
-    handleSaved(output);
+      const transformedState = transformDataTeams(state)
+      const dataTeams1Map = new Map(originalState.dataTeams.map((team) => [team.teamName, team]));
+      const dataTeams2Map = new Map(transformedState.dataTeams.map((team) => [team.teamName, team]));
+    
+      const difference = [];
+    
+      for (const [teamName, team] of dataTeams2Map) {
+        if (!dataTeams1Map.has(teamName)) {
+          difference.push(team);
+        } else {
+          const team1 = dataTeams1Map.get(teamName);
+          if (JSON.stringify(team1.userIds) !== JSON.stringify(team.userIds)) {
+            difference.push(team);
+          }
+        }
+      }
+    
+      const output = {
+        dataTeams: difference,
+      };
+    
+     handleSaved(output);
+
+   
   }
   function handleStart() {
     setOriginalState(initialData);
