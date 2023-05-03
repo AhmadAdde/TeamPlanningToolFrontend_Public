@@ -47,6 +47,15 @@ class DataService {
       return response;
     });
   }
+  deleteSavedData(deletedData) {
+    return fetch(API_URL + "/team/deleteSavedData", {
+      headers: Headers,
+      method: "POST",
+      body: JSON.stringify(deletedData.dataTeams)
+    }).then((response) => {
+      return response;
+    });
+  }
 }
 
 // eslint-disable-next-line import/no-anonymous-default-export

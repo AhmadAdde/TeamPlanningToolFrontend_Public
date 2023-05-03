@@ -11,27 +11,44 @@ export default function HomePage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [deletedTeams, setDeletedTeams] = useState([]);
   const [users, setUsers] = useState([]);
-  const [dataTeams, setDataTeams] = useState([])
-  
+  const [dataTeams, setDataTeams] = useState([]);
+
   useEffect(() => {
     async function fetchData() {
       try {
         const userResponse = await getPersons.getPersons();
         setUsers(userResponse);
-
+        console.log("USERRESPONSE: ", userResponse);
         const response = await getPersons.getTeams();
-        
-
-        const userColumn = {teamName: "Users", userIds: []};
-        for(var i = 0; i < userResponse.length; i++) {
+        console.log("TEAMRESPONSE: ", response);
+  
+        const userColumn = { teamName: "Users", userIds: [] };
+        for (var i = 0; i < userResponse.length; i++) {
           userColumn.userIds.push(userResponse[i].username);
         }
-
+  
         response.push(userColumn);
-
-        console.log("DATABASETEAM", response)
-        
-        setDataTeams(response.reverse());
+  
+        console.log("Modified Response: ", response);
+  
+        const newDataTeams = [];
+        console.log("DATABASETEAMRESPONSE", response);
+        response.forEach((team) => {
+          console.log("Current Team: ", team);
+          
+          const transformedTeam = {
+            teamName: team.teamName,
+            metaData: team.metaData ? Object.values(team.metaData) : [],
+            scrumMaster: team.scrumMaster,
+            userIds: team.userIds,
+          };
+  
+          console.log("Transformed Team: ", transformedTeam);
+          newDataTeams.push(transformedTeam);
+        });
+  
+        console.log("DATABASETEAM", newDataTeams);
+        setDataTeams(newDataTeams.reverse());
       } catch (error) {
         setErrorMessage(error.message);
       }
@@ -39,7 +56,6 @@ export default function HomePage() {
     fetchData();
   }, []);
 
-  
   console.log("USERSBACKEN", users);
   console.log("DATA TEAMS", dataTeams);
   const navigate = useNavigate();
@@ -52,24 +68,27 @@ export default function HomePage() {
     setDataTeams(updatedDataTeams);
     return updatedDataTeams;
   }
-  
+
   function deleteTeamHandler(teamName) {
     const newDeletedTeams = [...deletedTeams, teamName];
-    setDeletedTeams(newDeletedTeams)
+    setDeletedTeams(newDeletedTeams);
 
     const updatedDataTeams = dataTeams.filter(
       (team) => team.teamName !== teamName
     );
+    console.log("UPDATEDDATATEAMS", updatedDataTeams)
     setDataTeams(updatedDataTeams);
     return updatedDataTeams;
   }
-  function handleSaved(savedData) {
-    console.log("SAVEDDATA",savedData.dataTeams)
+  function handleSaved(savedData, deletedUsersMetadata) {
+    console.log("SAVEDDATA", savedData.dataTeams);
     getPersons.deleteTeam(deletedTeams);
-    getPersons.saveDataTeams(savedData.dataTeams).catch(response => console.log(response));
-  
-    console.log("DELETEDDATA", deletedTeams)
+    getPersons.deleteSavedData(deletedUsersMetadata)
+    getPersons
+      .saveDataTeams(savedData.dataTeams)
+      .catch((response) => console.log(response));
 
+    console.log("DELETEDDATA", deletedTeams);
   }
 
   console.log("DATATIHOMEREAL", dataTeams);
@@ -78,7 +97,6 @@ export default function HomePage() {
     const dataArray = Object.values(newDataTeams.dataTeams);
     setDataTeams(dataArray);
   }
- 
 
   return (
     <div>

@@ -58,7 +58,7 @@
 }
 
 .column:hover .users {
-  height: 70px;
+  height: 90px;
   transition: 0.2s;
 }
 
@@ -77,6 +77,30 @@
 
 .users p {
   margin: 0px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.users input {
+  margin: 0px;
+  display: inline-block;
+  margin-top: -100px!important;
+  height: 20px!important;
+  border: 0px!important;
+  position: relative;
+  width: 27px!important;
+  font-size: 17px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
 }
 
 .column .users .hidden {
