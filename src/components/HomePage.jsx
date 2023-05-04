@@ -63,7 +63,7 @@ export default function HomePage() {
   function addTeamHandler(enteredTeamName) {
     const updatedDataTeams = [
       ...dataTeams,
-      { teamName: enteredTeamName, userIds: [] },
+      { teamName: enteredTeamName, metaData: [], userIds: [] },
     ];
     setDataTeams(updatedDataTeams);
     return updatedDataTeams;
