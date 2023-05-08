@@ -175,3 +175,40 @@ input[type=number] {
   flex-direction: column;
   width: 200px;
 }
+
+.pin_wrapper {
+  display: none;
+  position: absolute;
+  margin-left: -24px;
+  margin-top: -16px;
+}
+
+.pin {
+  width: 35px;
+  height: 32px;
+}
+
+.count span {
+  text-align: center;
+  height: 35px;
+}
+
+.column:hover .count span {
+  margin-left: 10px;
+}
+
+.column:hover .pin_wrapper {
+  transition: 0.2s;
+  display: inline-block;
+}
+
+.pin_wrapper:hover .pin {
+  transition: 0.1s;
+  transform: rotate(-15deg);
+  cursor: pointer;
+}
+
+.pinned_wrapper_team {
+  transform: rotate(-15deg);
+  display: inline-block;
+}
