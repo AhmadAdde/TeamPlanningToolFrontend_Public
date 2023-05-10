@@ -21,32 +21,32 @@ export default function HomePage() {
         console.log("USERRESPONSE: ", userResponse);
         const response = await getPersons.getTeams();
         console.log("TEAMRESPONSE: ", response);
-  
+
         const userColumn = { teamName: "Users", userIds: [] };
         for (var i = 0; i < userResponse.length; i++) {
           userColumn.userIds.push(userResponse[i].username);
         }
-  
+
         response.push(userColumn);
-  
+
         console.log("Modified Response: ", response);
-  
+
         const newDataTeams = [];
         console.log("DATABASETEAMRESPONSE", response);
         response.forEach((team) => {
           console.log("Current Team: ", team);
-          
+
           const transformedTeam = {
             teamName: team.teamName,
             metaData: team.metaData ? Object.values(team.metaData) : [],
             scrumMaster: team.scrumMaster,
             userIds: team.userIds,
           };
-  
+
           console.log("Transformed Team: ", transformedTeam);
           newDataTeams.push(transformedTeam);
         });
-  
+
         console.log("DATABASETEAM", newDataTeams);
         setDataTeams(newDataTeams.reverse());
       } catch (error) {
@@ -76,14 +76,14 @@ export default function HomePage() {
     const updatedDataTeams = dataTeams.filter(
       (team) => team.teamName !== teamName
     );
-    console.log("UPDATEDDATATEAMS", updatedDataTeams)
+    console.log("UPDATEDDATATEAMS", updatedDataTeams);
     setDataTeams(updatedDataTeams);
     return updatedDataTeams;
   }
   function handleSaved(savedData, deletedUsersMetadata) {
     console.log("SAVEDDATA", savedData.dataTeams);
     getPersons.deleteTeam(deletedTeams);
-    getPersons.deleteSavedData(deletedUsersMetadata)
+    getPersons.deleteSavedData(deletedUsersMetadata);
     getPersons
       .saveDataTeams(savedData.dataTeams)
       .catch((response) => console.log(response));

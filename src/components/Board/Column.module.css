@@ -5,31 +5,31 @@
   width: 200px;
   height: 200px;
   border-radius: 12px;
-  flex-direction: column;  
+  flex-direction: column;
 }
 
 .header {
   display: flex;
   text-align: right;
   height: 60px;
-  background-color: #505AC9;
+  background-color: #505ac9;
   border-radius: 12px 12px 0px 0px;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
   justify-content: space-between;
 }
 
-.column:hover{
+.column:hover {
   height: 416px;
   width: 416px;
   margin-bottom: -540px;
   margin-right: -216px;
-  z-index: 100; 
+  z-index: 100;
   transition: 0.2s;
   background-color: #dadada;
 }
 
-.column:hover .list{
+.column:hover .list {
   visibility: visible;
   width: 416px;
   height: 600px;
@@ -85,11 +85,11 @@
 .users input {
   margin: 0px;
   display: inline-block;
-  margin-top: -100px!important;
-  height: 20px!important;
-  border: 0px!important;
+  margin-top: -100px !important;
+  height: 20px !important;
+  border: 0px !important;
   position: relative;
-  width: 27px!important;
+  width: 27px !important;
   font-size: 17px;
 }
 
@@ -99,7 +99,7 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
@@ -146,13 +146,24 @@ input[type=number] {
   background-color: #847e7e;
   width: 416px;
   height: 620px;
-
 }
 .userCol:hover {
   height: 620px;
   margin-bottom: 0;
   margin-right: 0px;
   background-color: #847e7e;
+}
+.userCol:hover .users {
+  height: 24px;
+}
+.userCol:hover .users .hidden {
+  visibility: hidden;
+}
+.userCol .users {
+  width: 371px;
+}
+.userCol .userList {
+  width: 416px;
 }
 .userHeader {
   background-color: #464343;
@@ -211,4 +222,14 @@ input[type=number] {
 .pinned_wrapper_team {
   transform: rotate(-15deg);
   display: inline-block;
+}
+
+.userCol .pin_wrapper {
+  visibility: hidden;
+  width: 0;
+  height: 0;
+}
+
+.userColhover .pin_wrapper {
+  display: none;
 }
