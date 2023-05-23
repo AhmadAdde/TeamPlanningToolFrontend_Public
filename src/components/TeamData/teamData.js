@@ -18,6 +18,34 @@ class DataService {
         return response.data;
       });
   }
+  getRoles() {
+    return axios
+      .get(API_URL + "/team/get-roles", {
+        headers: Headers,
+      })
+      .then((response) => {
+        return response.data;
+      });
+  }
+  loadDataToDatabase() {
+    return axios
+      .get(API_URL + "/team/load-data", {
+        headers: Headers,
+      })
+      .then((response) => {
+        return response.data;
+      });
+  }
+  updateDatasources(teamNamesArray) {
+    return fetch(API_URL + "/team/update-data", {
+      headers: Headers,
+      method: "POST",
+      body: JSON.stringify(teamNamesArray),
+    })
+    .then((response) => {
+      return response;
+    });
+  }
   getTeams() {
     return axios(API_URL + "/team/get-all", {
       headers: Headers,

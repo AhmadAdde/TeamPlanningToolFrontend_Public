@@ -33,7 +33,7 @@ function AddTeam(props) {
         ref={titleInputRef}
       />
 
-      <button type="submit" value="Submit">
+      <button type="submit" value="Submit" className={classes.button}>
         AddTeam
       </button>
     </form>

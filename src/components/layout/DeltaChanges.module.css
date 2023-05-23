@@ -1,0 +1,15 @@
+.bold {
+    font-weight: 700;
+}
+.roles, .teams, .availability, .addedTeams {
+    display: flex;
+}
+.container p {
+    font-weight: 900;
+    margin: 0;
+    margin-right: 10px;
+}
+.container {
+    font-size: 17;
+    margin-left: 5rem;
+}

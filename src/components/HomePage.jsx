@@ -9,19 +9,26 @@ import Board from "./Board/Board";
 
 export default function HomePage() {
   const [errorMessage, setErrorMessage] = useState("");
-  const [deletedTeams, setDeletedTeams] = useState([]);
   const [users, setUsers] = useState([]);
+  const [deletedTeams, setDeletedTeams] = useState([]);
   const [dataTeams, setDataTeams] = useState([]);
+  const [roles, setRoles] = useState([]);
+  const [comparedData, setComparedData] = useState({});
 
   useEffect(() => {
     async function fetchData() {
       try {
+        const loadData = await getPersons.loadDataToDatabase();
+        console.log("LOADDATA", loadData);
+        setComparedData(loadData);
         const userResponse = await getPersons.getPersons();
         setUsers(userResponse);
         console.log("USERRESPONSE: ", userResponse);
         const response = await getPersons.getTeams();
         console.log("TEAMRESPONSE: ", response);
-
+        const rolesResponse = await getPersons.getRoles();
+        setRoles(rolesResponse);
+        console.log("ROLESRESPONSE: ", rolesResponse);
         const userColumn = { teamName: "Users", userIds: [] };
         for (var i = 0; i < userResponse.length; i++) {
           userColumn.userIds.push(userResponse[i].username);
@@ -59,16 +66,14 @@ export default function HomePage() {
   console.log("USERSBACKEN", users);
   console.log("DATA TEAMS", dataTeams);
   const navigate = useNavigate();
-
-  function addTeamHandler(enteredTeamName) {
+   function addTeamHandler(enteredTeamName) {
     const updatedDataTeams = [
       ...dataTeams,
-      { teamName: enteredTeamName, metaData: [], userIds: [] },
+      { teamName: enteredTeamName, metaData: [], scrumMaster: [], userIds: [] },
     ];
     setDataTeams(updatedDataTeams);
     return updatedDataTeams;
   }
-
   function deleteTeamHandler(teamName) {
     const newDeletedTeams = [...deletedTeams, teamName];
     setDeletedTeams(newDeletedTeams);
@@ -80,15 +85,16 @@ export default function HomePage() {
     setDataTeams(updatedDataTeams);
     return updatedDataTeams;
   }
-  function handleSaved(savedData, deletedUsersMetadata) {
+
+  function handleSaved(savedData) {
     console.log("SAVEDDATA", savedData.dataTeams);
-    getPersons.deleteTeam(deletedTeams);
-    getPersons.deleteSavedData(deletedUsersMetadata);
     getPersons
       .saveDataTeams(savedData.dataTeams)
       .catch((response) => console.log(response));
-
-    console.log("DELETEDDATA", deletedTeams);
+    console.log("savedData", savedData.dataTeams);
+    let teamNamesArray = savedData.dataTeams.map((team) => team.teamName);
+    console.log("teamNamesArray", teamNamesArray);
+    getPersons.updateDatasources(teamNamesArray);
   }
 
   console.log("DATATIHOMEREAL", dataTeams);
@@ -100,9 +106,6 @@ export default function HomePage() {
 
   return (
     <div>
-      <h1>Welcome to Home page! 😊</h1>
-      {errorMessage && <div>{errorMessage}</div>}
-
       <div className={classes.container}>
         <Board
           users={users}
@@ -111,6 +114,8 @@ export default function HomePage() {
           addTeam={addTeamHandler}
           setDataTeams={setDataTeamsHandler}
           handleSaved={handleSaved}
+          roles={roles}
+          comparedData={comparedData}
         />
       </div>
       <div>

@@ -3,15 +3,32 @@ import { Draggable, Droppable } from "react-beautiful-dnd";
 import { toast, Toaster } from "react-hot-toast";
 import pin_selected from "../../assets/pin_selected.png";
 import pin_unselected from "../../assets/pin_unselected.png";
+import Filter from "../layout/Filter";
 
-function Column({ column, users, onClose, changeAvailability, togglePinnedTeam }) {
+function Column({
+  column,
+  users,
+  onClose,
+  changeAvailability,
+  togglePinnedTeam,
+  boolean,
+  originalDataTeams,
+  roles,
+  setRole,
+  comparedData,
+}) {
+  var isNotCloseColumn = false;
   const isUsersColumn = column.teamName === "Users";
+  for (let i = 0; i < originalDataTeams.length; i++) {
+    if (column.teamName === originalDataTeams[i].teamName) {
+      isNotCloseColumn = true;
+    }
+  }
 
   function handleClick() {
     toast.success("Deleted " + column.teamName);
     onClose(column.teamName);
   }
-
   function handleAvailabilityChange(e, user, teamName) {
     if (e.target.value > 100) {
       e.target.value = 100;
@@ -26,47 +43,126 @@ function Column({ column, users, onClose, changeAvailability, togglePinnedTeam }
   }
 
   function handleTogglePinnedTeam(e) {
-    if(e.target.nodeName == 'A') return;
-    const a = e.target.parentElement, img = e.target;
+    if (e.target.nodeName === "A") return;
+    const a = e.target.parentElement,
+      img = e.target;
     const isPinned = !a.classList.contains(classes.pinned_wrapper_team);
     a.classList.toggle(classes.pinned_wrapper_team, isPinned);
     img.src = isPinned ? pin_selected : pin_unselected;
     togglePinnedTeam(column.teamName);
   }
+  function setRoles(role, user, deleteOrNot) {
+    setRole(user.username, column.teamName, role, deleteOrNot);
+  }
 
   const userLength = users.length;
+  let scrumMasterClass = "";
+  if (column.scrumMaster) {
+    if (column.scrumMaster.length === 0) {
+      scrumMasterClass = classes.yellow;
+    } else if (column.scrumMaster.length > 1) {
+      scrumMasterClass = classes.red;
+    }
+  }
+  function userDifference(name) {
+    for (let key in comparedData) {
+      let data = comparedData[key];
 
+      for (let key2 in data) {
+        if (data[key2].size !== 0) {
+          let dataConf = data[key2];
+
+          if (dataConf[name]) {
+            if (dataConf[name][0] === column.teamName) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+    return false;
+  }
   return (
-    <div className={`${classes.column} ${isUsersColumn ? classes.userCol : ""}`}>
-      <Toaster/>
-      <div className={`${classes.header} ${isUsersColumn ? classes.userHeader : ""}`}>
-        <p className={classes.count}>
-          <a onClick={handleTogglePinnedTeam} className={classes.pin_wrapper}>
-            <img src={pin_unselected} className={classes.pin}></img>
-          </a>
-          <span>{userLength}</span>
+    <div
+      className={`${classes.column} ${isUsersColumn ? classes.userCol : ""}${
+        boolean && !isUsersColumn ? classes.biggerColumn : ""
+      }`}
+    >
+      <Toaster />
+      <div
+        className={`${classes.header} ${scrumMasterClass} ${
+          isUsersColumn ? classes.userHeader : ""
+        }`}
+      >
+        <div className={classes.wrapper}>
+          <div className={classes.pin_wrapper}>
+            <img
+              src={pin_unselected}
+              className={classes.pin}
+              onClick={handleTogglePinnedTeam}
+              alt="pin unselected"
+            ></img>
+          </div>
+          <p className={classes.count}>
+            <span>{userLength}</span>
+          </p>
+        </div>
+        <p
+          className={`${classes.title} ${
+            isUsersColumn ? classes.userTitle : ""
+          }`}
+        >
+          {column.teamName.replaceAll("_", " ")}
         </p>
-        <p className={`${classes.title} ${isUsersColumn ? classes.userTitle : ""}`}>
-          {column.teamName}
-        </p>
-        <span className={`${classes.close} ${isUsersColumn ? classes.noClose : ""}`} onClick={handleClick}>
+        <span
+          className={`${classes.justASpan} ${
+            !isNotCloseColumn ? classes.noJustASpan : ""
+          }`}
+        ></span>
+        <span
+          className={`${classes.close} ${
+            isNotCloseColumn ? classes.noClose : ""
+          }`}
+          onClick={handleClick}
+        >
           &times;
         </span>
       </div>
       <Droppable droppableId={`${column.teamName}`}>
         {(provided, snapshot) => (
-          <div className={`${classes.list} ${isUsersColumn ? classes.userList : ""}`} ref={provided.innerRef} {...provided.droppableProps}>
+          <div
+            className={`${classes.list} ${
+              isUsersColumn ? classes.userList : ""
+            }`}
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
             {users.map((user, index) => (
-              <Draggable key={user.username + column.teamName} draggableId={`${user.username + column.teamName}`} index={index}>
+              <Draggable
+                key={user.username + column.teamName}
+                draggableId={`${user.username + column.teamName}`}
+                index={index}
+              >
                 {(provided, snapshot) => (
-                  <div className={`${classes.users} ${snapshot.isDragging ? classes.dragging : ""}`} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                  <div
+                    className={`${classes.users} ${
+                      userDifference(user.firstname + " " + user.lastname)
+                        ? classes.changeUserColor
+                        : ""
+                    }${snapshot.isDragging ? classes.dragging : ""}`}
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                  >
                     <div className={classes.info}>
                       <p>
                         {user.firstname} {user.lastname}
                       </p>
-                      <p className={classes.hidden}>
-                        {user.username}<br />
-                        {user.role}<br />
+                      <div className={classes.hidden}>
+                        <p className={classes.username}>{user.username}</p>
+
+                        <Filter roles={roles} user={user} setRole={setRoles} />
+
                         <span className={classes.rt_input}>
                           <input
                             name="availability"
@@ -75,10 +171,13 @@ function Column({ column, users, onClose, changeAvailability, togglePinnedTeam }
                             min="0"
                             max="100"
                             defaultValue={user.availability}
-                            onKeyPress={(e) => handleAvailabilityChange(e, user, column.teamName)}
-                          />%
+                            onKeyPress={(e) =>
+                              handleAvailabilityChange(e, user, column.teamName)
+                            }
+                          />
+                          %
                         </span>
-                      </p>
+                      </div>
                     </div>
                   </div>
                 )}

@@ -1,0 +1,46 @@
+.noScrumMaster p,
+.moreScrumMaster p {
+  font-weight: bold;
+  margin: 0;
+  margin-right: 10px;
+  width: 191px;
+}
+.noScrumMaster,
+.moreScrumMaster {
+  display: flex;
+  font-size: 17px;
+}
+.scrumsDifferences {
+  margin-right: 5rem;
+}
+.container {
+  display: flex;
+  margin-bottom: 3rem;
+}
+.availability,
+.name,
+.roles {
+  display: flex;
+}
+
+.bold {
+  font-weight: 700;
+}
+.comparisonConfAndIrm {
+  display: flex;
+  width: 88rem;
+  font-size: 17px;
+}
+.comparisonConfAndIrm p {
+  margin: 0;
+  font-weight: 900;
+}
+.conf {
+  margin-right: 3rem;
+}
+.availability p,
+.roles p,
+.name p {
+  margin-right: 10px;
+  margin-left: 15px;
+}

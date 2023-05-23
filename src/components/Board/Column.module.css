@@ -105,11 +105,13 @@ input[type="number"] {
 
 .column .users .hidden {
   visibility: hidden;
+  
 }
 
 .column:hover .users .hidden {
   visibility: visible;
   transition: 0.2s;
+  
 }
 
 .column:hover .close {
@@ -140,6 +142,32 @@ input[type="number"] {
 }
 .team {
   margin: 0px;
+}
+.yellow {
+  background-color: yellow;
+  
+}
+.yellow .title {
+  color: black;
+}
+.yellow .count {
+  color: black;
+}
+.yellow .close {
+  color: black;
+}
+.red{
+  background-color: red;
+  
+}
+.red .title {
+  color: black;
+}
+.red .close {
+  color: black;
+}
+.red .count {
+  color: black;
 }
 
 .userCol {
@@ -175,7 +203,7 @@ input[type="number"] {
   color: white;
 }
 .userTitle {
-  margin-left: 6.26rem;
+  margin-left: 9.5rem;
 }
 .userList {
   visibility: visible;
@@ -186,6 +214,9 @@ input[type="number"] {
   flex-direction: column;
   width: 200px;
 }
+.wrapper {
+  display: flex;
+}
 
 .pin_wrapper {
   display: none;
@@ -195,8 +226,8 @@ input[type="number"] {
 }
 
 .pin {
-  width: 35px;
-  height: 32px;
+  width: 40px;
+  height: 37px;
 }
 
 .count span {
@@ -232,4 +263,68 @@ input[type="number"] {
 
 .userColhover .pin_wrapper {
   display: none;
+}
+.biggerColumn {
+  display: flex;
+  border-radius: 3px;
+  background-color: #b1b1b1;
+  width: 200px;
+  height: 600px;
+  border-radius: 12px;
+  flex-direction: column;
+}
+.biggerColumn:hover {
+  height: 600px;
+  width: 416px;
+  margin-bottom: -540px;
+  margin-right: -216px;
+  z-index: 100;
+  transition: 0.2s;
+  background-color: #dadada;
+}
+
+.biggerColumn:hover .list {
+  visibility: visible;
+  width: 416px;
+  height: 600px;
+  padding-bottom: 0rem;
+  transition: 0.2s;
+  overflow-y: scroll;
+}
+.biggerColumn .users .hidden {
+  visibility: hidden;
+}
+
+.biggerColumn:hover .users .hidden {
+  visibility: visible;
+  transition: 0.2s;
+}
+
+.biggerColumn:hover .close {
+  visibility: visible;
+}
+.biggerColumn:hover .users {
+  height: 90px;
+  transition: 0.2s;
+}
+.biggerColumn .list {
+  visibility: visible;
+  display: flex;
+  flex-direction: column;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  height: 600px;
+  width: 200px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+.username {
+  overflow: hidden;
+}
+.noJustASpan {
+  display: none;
+}
+.changeUserColor {
+  background-color: yellow;
 }
