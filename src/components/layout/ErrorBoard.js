@@ -1,8 +1,6 @@
 import classes from "./ErrorBoard.module.css";
 
 function ErrorBoard({ dataTeams, comparedData }) {
-  console.log("DATATEAMS", dataTeams);
-  console.log("COMPAREDDATA", comparedData);
   dataTeams = Object.values(dataTeams);
 
   const teamsWithoutScrumMaster = dataTeams
@@ -34,11 +32,7 @@ function ErrorBoard({ dataTeams, comparedData }) {
     rolesComponents: rolesIrm,
     nameComponents: nameIrm,
   } = generateComponents(comparedData.irm || {});
-  /*<div className={classes.irm}>
-          <p>IRM:</p>
-          <div>{availabilityString + rolesString + nameString}</div>
-        </div>*/
-  console.log("No scrums: ", teamsWithoutScrumMaster);
+
   return (
     <div className={classes.container}>
       <div className={classes.scrumsDifferences}>
@@ -100,7 +94,7 @@ const generateComponents = (data) => {
           <div key={`availability-${name}`}>
             <span className={classes.bold}>{name}</span> in{" "}
             <span className={classes.bold}>{team}</span> has{" "}
-            <span className={classes.bold}>{availability}%</span> availability. 
+            <span className={classes.bold}>{availability}%</span> availability.
           </div>
         );
       }

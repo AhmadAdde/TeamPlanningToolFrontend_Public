@@ -4,6 +4,8 @@ import { toast, Toaster } from "react-hot-toast";
 import pin_selected from "../../assets/pin_selected.png";
 import pin_unselected from "../../assets/pin_unselected.png";
 import Filter from "../layout/Filter";
+import { useState } from "react";
+import { Checkbox, FormControlLabel } from "@mui/material";
 
 function Column({
   column,
@@ -16,14 +18,31 @@ function Column({
   roles,
   setRole,
   comparedData,
+  sort,
 }) {
   var isNotCloseColumn = false;
+  const [sortOrder, setSortOrder] = useState(null);
   const isUsersColumn = column.teamName === "Users";
   for (let i = 0; i < originalDataTeams.length; i++) {
     if (column.teamName === originalDataTeams[i].teamName) {
       isNotCloseColumn = true;
     }
   }
+
+  const handleSortChange = (newSortOrder) => {
+    if (newSortOrder !== sortOrder) {
+      if (newSortOrder === "down") {
+        users.sort((a, b) => (a.firstname > b.firstname ? 1 : -1));
+      } else if (newSortOrder === "up") {
+        users.sort((a, b) => (a.name < b.name ? 1 : -1));
+
+      }
+      setSortOrder(newSortOrder);
+    } else {
+      setSortOrder(null);
+    }
+    sort(users);
+  };
 
   function handleClick() {
     toast.success("Deleted " + column.teamName);
@@ -119,6 +138,40 @@ function Column({
             !isNotCloseColumn ? classes.noJustASpan : ""
           }`}
         ></span>
+        <div
+          className={`${classes.noSwitch} ${
+            isUsersColumn ? classes.switch : ""
+          }`}
+        >
+          <div className={classes.con}>
+            <FormControlLabel
+            sx={{
+              marginTop: "8px",
+              color: 'white',
+            }}
+              control={
+                <Checkbox
+                  checked={sortOrder === "down"}
+                  onChange={() => handleSortChange("down")}
+                />
+              }
+              label="A-Z"
+            />
+            <FormControlLabel 
+            sx={{
+              marginTop: "8px",
+              color: 'white',
+            }}
+              control={
+                <Checkbox
+                  checked={sortOrder === "up"}
+                  onChange={() => handleSortChange("up")}
+                />
+              }
+              label="Z-A"
+            />
+          </div>
+        </div>
         <span
           className={`${classes.close} ${
             isNotCloseColumn ? classes.noClose : ""

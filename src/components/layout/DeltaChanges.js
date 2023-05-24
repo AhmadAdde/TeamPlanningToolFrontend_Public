@@ -1,13 +1,11 @@
 import classes from "./DeltaChanges.module.css";
 function DeltaChanges({ deltaChanges, users }) {
-  console.log("DELTACHANGES", deltaChanges);
   let availabilityComponents = [];
   let rolesComponents = [];
   let teamComponents = [];
-  let addedTeamsComponents = deltaChanges.teams.addedTeams.join(', ');
+  let addedTeamsComponents = deltaChanges.teams.addedTeams.join(", ");
   if (Object.keys(deltaChanges).length > 0) {
     if (deltaChanges.availability) {
-      
       for (let [name, entry] of Object.entries(
         deltaChanges.availability.from
       )) {
@@ -44,7 +42,7 @@ function DeltaChanges({ deltaChanges, users }) {
         }
         let team = entry[0];
         let roles = entry[1];
-        let rolesNew = deltaChanges.roles.to[name][1];
+        let rolesNew = deltaChanges.roles.to[name][1].join(", ");
         rolesComponents.push(
           <div key={`roles-${name}`}>
             <span className={classes.bold}>{fullName}</span> in{" "}

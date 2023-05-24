@@ -22,23 +22,25 @@ const reorderColumnList = (sourceCol, startIndex, endIndex) => {
 function getDifference(dataTeams1Map, dataTeams2Map) {
   const difference = [];
   for (const [teamName, team] of dataTeams2Map) {
-    if (!dataTeams1Map.has(teamName)) {
-      difference.push(team);
-    } else {
-      const team1 = dataTeams1Map.get(teamName);
-
-      if (JSON.stringify(team1.userIds) !== JSON.stringify(team.userIds)) {
+    if (teamName !== "Users") {
+      if (!dataTeams1Map.has(teamName)) {
         difference.push(team);
       } else {
-        for (let i = 0; i < team.metaData.length; i++) {
-          let metaData1 = team1.metaData[i];
-          let metaData = team.metaData[i];
+        const team1 = dataTeams1Map.get(teamName);
 
-          if (
-            metaData1.availability !== metaData.availability ||
-            JSON.stringify(metaData1.role) !== JSON.stringify(metaData.role)
-          ) {
-            difference.push(team);
+        if (JSON.stringify(team1.userIds) !== JSON.stringify(team.userIds)) {
+          difference.push(team);
+        } else {
+          for (let i = 0; i < team.metaData.length; i++) {
+            let metaData1 = team1.metaData[i];
+            let metaData = team.metaData[i];
+
+            if (
+              metaData1.availability !== metaData.availability ||
+              JSON.stringify(metaData1.role) !== JSON.stringify(metaData.role)
+            ) {
+              difference.push(team);
+            }
           }
         }
       }
@@ -64,6 +66,7 @@ function Board({
   const mousePosition = { x: 0, y: 0 };
   var pinnedTeams = [];
   const [boolean, setBoolean] = useState(false);
+  const [boolean2, setBoolean2] = useState(false);
   const [deltaChange, setDeltaChange] = useState({
     availability: { from: {}, to: {} },
     roles: { from: {}, to: {} },
@@ -90,6 +93,13 @@ function Board({
       setBoolean(false);
     } else {
       setBoolean(true);
+    }
+  }
+  function showErrorHandlings() {
+    if (boolean2 === true) {
+      setBoolean2(false);
+    } else {
+      setBoolean2(true);
     }
   }
 
@@ -200,7 +210,6 @@ function Board({
         (obj) => obj.username === name
       );
       if (changeDataTeam.metaData[metaDataIndex]) {
-        console.log("COPS", copy);
         let array = [];
         if (!copy.availability.from[name]) {
           array = [
@@ -219,7 +228,7 @@ function Board({
           delete copy.availability.from[name];
           delete copy.availability.to[name];
         }
-        console.log("COPS", copy);
+
         setDeltaChange({ ...deltaChange, availability: copy.availability });
       }
     }
@@ -318,18 +327,16 @@ function Board({
       delete copy.teams.to[removed];
     }
     setDeltaChange({ ...deltaChange, teams: copy.teams });
-    console.log("deltaChange", copy);
+
     let endScrumMasters = [];
     if (destinationCol.teamName !== "Users") {
       endScrumMasters = Array.from(destinationCol.scrumMaster);
-      console.log("DINMAMMA", endScrumMasters);
+
       if (removedScrum.length >= 1 || removedScrum) {
-        console.log("REMOVEDSCRUm", removedScrum[0]);
         endScrumMasters.push(removedScrum[0]);
       }
-      console.log("DINMAMMA", endScrumMasters);
     }
-    console.log("DINMAMMA", endScrumMasters);
+
     const updateState = (newStartCol, newEndCol) => {
       const newState = {
         ...state,
@@ -374,7 +381,7 @@ function Board({
     };
     if (sourceCol.teamName === "Users") {
       startUserIds.push(objectToAdd.username);
-      startUserIds.sort();
+
       newStartCol = {
         ...sourceCol,
         userIds: startUserIds,
@@ -383,7 +390,7 @@ function Board({
     }
 
     const endMetaData = Array.from(destinationCol.metaData);
-    console.log("ENDSCUMMARDTERS", endScrumMasters);
+
     var newEndCol = {
       ...destinationCol,
       userIds: endUserIds,
@@ -440,12 +447,11 @@ function Board({
       let array = [];
       const copy = JSON.parse(JSON.stringify(deltaChange));
       if (deleteOrNot === false) {
-        if (role === "Scrum_Master") {
+        if (role === "Scrum Master") {
           changeDataTeam.scrumMaster.push(name);
         }
         if (changeDataTeam.metaData[metaDataIndex]) {
           if (!copy.roles.from[name]) {
-            console.log("röl", startRole);
             array = [teamName, startRole];
             copy.roles.from[name] = array;
           }
@@ -454,7 +460,7 @@ function Board({
           copy.roles.to[name] = array;
         }
       } else {
-        if (role === "Scrum_Master") {
+        if (role === "Scrum Master") {
           const indexScrum = scrumMasters.indexOf(name);
           changeDataTeam.scrumMaster.splice(indexScrum, 1);
         }
@@ -473,7 +479,6 @@ function Board({
 
     if (!Array.isArray(state.dataTeams))
       state.dataTeams = Object.values(state.dataTeams);
-    //const dataTeamsArray = Object.values(state.dataTeams);
 
     const newState = {
       ...state,
@@ -484,6 +489,22 @@ function Board({
       ],
     };
     setState(newState);
+  }
+  function sortUsers(sortedUsers) {
+    let dataTeamsWithSorted = state.dataTeams;
+    let sortUserIdsUsers = dataTeamsWithSorted[0];
+
+    let userIndexMap = new Map();
+    sortedUsers.forEach((user, index) => {
+      userIndexMap.set(user.username, index);
+    });
+
+    sortUserIdsUsers.userIds.sort(
+      (a, b) => userIndexMap.get(a) - userIndexMap.get(b)
+    );
+    dataTeamsWithSorted[0] = sortUserIdsUsers;
+
+    setState({ ...state, dataTeams: dataTeamsWithSorted });
   }
 
   const renderColumns = (teamIdCondition, additionalProps = {}) => {
@@ -512,6 +533,7 @@ function Board({
             roles={roles}
             setRole={setRole}
             comparedData={comparedData}
+            sort={sortUsers}
           />
         );
       }
@@ -522,12 +544,35 @@ function Board({
   return (
     <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
       <div className={classes.container}>
-        <div className={classes.section}>
-          <div className={classes.addTeam}>
-            <AddTeam onAddTeam={handelAddTeam} />
+        <div className={classes.conSwitch}>
+          <input
+            onClick={showErrorHandlings}
+            type="checkbox"
+            className={classes.checkbox}
+            id={classes.checkbox}
+          />
+          <label className={classes.switch} htmlFor={classes.checkbox}>
+            <span className={classes.slider}></span>
+          </label>
+        </div>
+        <div
+          className={`${classes.showErrors} ${
+            boolean2 ? classes.hideErrors : ""
+          }`}
+        >
+          <div className={classes.section}>
+            <div className={classes.addTeam}>
+              <AddTeam onAddTeam={handelAddTeam} />
+            </div>
+            <div className={classes.deltaChanges}>
+              <DeltaChanges deltaChanges={deltaChange} users={users} />
+            </div>
           </div>
-          <div className={classes.deltaChanges}>
-            <DeltaChanges deltaChanges={deltaChange} users={users} />
+          <div className={classes.errorBoard}>
+            <ErrorBoard
+              dataTeams={state.dataTeams}
+              comparedData={comparedData}
+            />
           </div>
         </div>
         <div className={classes.buttons}>
@@ -548,9 +593,6 @@ function Board({
               <span className={classes.slider}></span>
             </label>
           </div>
-        </div>
-        <div className={classes.errorBoard}>
-          <ErrorBoard dataTeams={state.dataTeams} comparedData={comparedData} />
         </div>
         <div className={classes.columns}>
           <div className={classes.userColumn}>

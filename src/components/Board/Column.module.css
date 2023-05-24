@@ -328,3 +328,17 @@ input[type="number"] {
 .changeUserColor {
   background-color: yellow;
 }
+
+.noSwitch { 
+  display: none;
+  margin-left: 10px;
+}
+.switch {
+  display: contents;
+  padding-left: 10px;
+
+}
+.con {
+  margin-left: 1rem;
+  
+}
