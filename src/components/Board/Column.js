@@ -35,7 +35,6 @@ function Column({
         users.sort((a, b) => (a.firstname > b.firstname ? 1 : -1));
       } else if (newSortOrder === "up") {
         users.sort((a, b) => (a.name < b.name ? 1 : -1));
-
       }
       setSortOrder(newSortOrder);
     } else {
@@ -145,10 +144,10 @@ function Column({
         >
           <div className={classes.con}>
             <FormControlLabel
-            sx={{
-              marginTop: "8px",
-              color: 'white',
-            }}
+              sx={{
+                marginTop: "8px",
+                color: "white",
+              }}
               control={
                 <Checkbox
                   checked={sortOrder === "down"}
@@ -157,11 +156,11 @@ function Column({
               }
               label="A-Z"
             />
-            <FormControlLabel 
-            sx={{
-              marginTop: "8px",
-              color: 'white',
-            }}
+            <FormControlLabel
+              sx={{
+                marginTop: "8px",
+                color: "white",
+              }}
               control={
                 <Checkbox
                   checked={sortOrder === "up"}

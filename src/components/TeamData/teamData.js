@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/api";
+const API_URL = "http://localhost:18080/api";
 const jwt = localStorage.getItem("jwt");
 
 const Headers = {
@@ -41,36 +41,32 @@ class DataService {
       headers: Headers,
       method: "POST",
       body: JSON.stringify(teamNamesArray),
-    })
-    .then((response) => {
+    }).then((response) => {
       return response;
     });
   }
   getTeams() {
     return axios(API_URL + "/team/get-all", {
       headers: Headers,
-      
-    })
-    .then((response) => {
+    }).then((response) => {
       return response.data;
     });
   }
   saveDataTeams(saveData) {
     console.log("SAVEGDDASDA", saveData);
     return fetch(API_URL + "/team/create", {
-        headers: Headers,
-        method: "POST",
-        body: JSON.stringify(saveData),
-      })
-      .then((response) => {
-        return response;
-      });
+      headers: Headers,
+      method: "POST",
+      body: JSON.stringify(saveData),
+    }).then((response) => {
+      return response;
+    });
   }
   deleteTeam(teamNames) {
     return fetch(API_URL + "/team/delete", {
       headers: Headers,
       method: "POST",
-      body: JSON.stringify(teamNames)
+      body: JSON.stringify(teamNames),
     }).then((response) => {
       return response;
     });
@@ -79,7 +75,7 @@ class DataService {
     return fetch(API_URL + "/team/deleteSavedData", {
       headers: Headers,
       method: "POST",
-      body: JSON.stringify(deletedData.dataTeams)
+      body: JSON.stringify(deletedData.dataTeams),
     }).then((response) => {
       return response;
     });

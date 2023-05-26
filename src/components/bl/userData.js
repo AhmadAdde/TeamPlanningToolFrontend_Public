@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/api/data";
+const API_URL = "http://localhost:18080/api/data";
 const jwt = localStorage.getItem("jwt");
 
 const Headers = {
