@@ -34,7 +34,7 @@ function Column({
       if (newSortOrder === "down") {
         users.sort((a, b) => (a.firstname > b.firstname ? 1 : -1));
       } else if (newSortOrder === "up") {
-        users.sort((a, b) => (a.name < b.name ? 1 : -1));
+        users.sort((a, b) => (a.firstname < b.firstname ? 1 : -1));
 
       }
       setSortOrder(newSortOrder);

@@ -586,10 +586,10 @@ function Board({
             <input
               onClick={show}
               type="checkbox"
-              className={classes.checkbox}
-              id={classes.checkbox}
+              className={classes.checkbox1}
+              id={classes.checkbox1}
             />
-            <label className={classes.switch} htmlFor={classes.checkbox}>
+            <label className={classes.switch} htmlFor={classes.checkbox1}>
               <span className={classes.slider}></span>
             </label>
           </div>

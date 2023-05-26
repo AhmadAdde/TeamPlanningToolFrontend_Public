@@ -50,6 +50,12 @@
   height: 0;
   position: absolute;
 }
+.checkbox1 {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
 
 .switch {
   width: 100%;
@@ -72,11 +78,17 @@
   transition: all 0.2s ease-out;
   cursor: pointer;
 }
+.checkbox1:checked + .switch {
+  background-color: #505ac9;
+}
 
 .checkbox:checked + .switch {
   background-color: #505ac9;
 }
-
+.checkbox1:checked + .switch .slider {
+  left: calc(50% - 27px / 2 + 10px);
+  top: calc(50% - 27px / 2);
+}
 .checkbox:checked + .switch .slider {
   left: calc(50% - 27px / 2 + 10px);
   top: calc(50% - 27px / 2);
