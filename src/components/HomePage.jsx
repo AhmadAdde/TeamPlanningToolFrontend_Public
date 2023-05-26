@@ -106,13 +106,6 @@ export default function HomePage() {
           comparedData={comparedData}
         />
       </div>
-      <div>
-        Your Json Web Toke is:
-        <br />{" "}
-        <p style={{ overflowWrap: "break-word" }}>
-          {localStorage.getItem("jwt")}
-        </p>
-      </div>
       <div className="row center-align">
         <button
           className="btn deep-purple darken-4 waves-effect waves-light"
